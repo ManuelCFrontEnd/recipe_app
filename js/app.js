@@ -26,6 +26,29 @@ document.addEventListener('DOMContentLoaded', () => {
             router.navigateTo(link.getAttribute('href'));
         }
     });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('.material-symbols-rounded');
+
+    // Load saved theme or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeIcon.textContent = 'light_mode';
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+
+        // Update icon
+        themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+
+        // Save preference
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
 });
 
 // Expose store for debugging

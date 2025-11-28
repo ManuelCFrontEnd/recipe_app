@@ -35,16 +35,15 @@
   --transition-normal: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1C1917;
-    --surface: #292524;
-    --text-main: #E7E5E4;
-    --text-secondary: #A8A29E;
-    --border: #44403C;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
-  }
+/* Dark Mode */
+body.dark-mode {
+  --background: #1C1917;
+  --surface: #292524;
+  --text-main: #E7E5E4;
+  --text-secondary: #A8A29E;
+  --border: #44403C;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 /* Animations */
@@ -64,6 +63,63 @@
 
 .slide-in {
     animation: slideIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 68px; /* Just above the bottom nav */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 3px solid var(--surface);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 101; /* Above bottom nav */
+    transition: all var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 8px 32px rgba(255, 140, 66, 0.4);
+}
+
+.theme-toggle:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.theme-toggle .material-symbols-rounded {
+    font-size: 28px;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .material-symbols-rounded {
+    transform: rotate(180deg);
+}
+
+/* Adjust for mobile */
+@media (max-width: 600px) {
+    .theme-toggle {
+        bottom: 64px;
+        width: 52px;
+        height: 52px;
+    }
+    
+    .theme-toggle .material-symbols-rounded {
+        font-size: 26px;
+    }
 }
 
 * {
@@ -861,7 +917,7 @@ select:focus {
 
 .divider {
     height: 1px;
-    background: var(--border-color);
+    background: var(--border);
     margin: var(--spacing-lg) 0;
 }
 
@@ -870,11 +926,11 @@ select:focus {
     align-items: center;
     gap: 12px;
     padding: 12px 0;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border);
 }
 
 .check-icon {
-    color: var(--success-color);
+    color: var(--success);
     font-size: 20px;
 }
 
@@ -890,7 +946,7 @@ select:focus {
 .step-number {
     width: 28px;
     height: 28px;
-    background: var(--primary-color);
+    background: var(--primary);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -916,7 +972,7 @@ select:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--surface-color);
+    background: var(--surface);
     z-index: 200;
     display: flex;
     flex-direction: column;
@@ -931,7 +987,7 @@ select:focus {
     display: flex;
     align-items: center;
     gap: 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border);
 }
 
 .cooking-content {
@@ -947,7 +1003,7 @@ select:focus {
 .cook-step h2 {
     font-size: 2rem;
     margin-bottom: 24px;
-    color: var(--primary-color);
+    color: var(--primary);
 }
 
 .cook-step p {
@@ -993,7 +1049,7 @@ select:focus {
 .dynamic-row.column {
     flex-direction: column;
     align-items: stretch;
-    background: var(--background-color);
+    background: var(--background);
     padding: 12px;
     border-radius: var(--radius-md);
 }
@@ -1001,7 +1057,7 @@ select:focus {
 .btn-small {
     padding: 4px 12px;
     font-size: 0.8rem;
-    background: var(--background-color);
+    background: var(--background);
     border-radius: var(--radius-full);
 }
 
@@ -1014,7 +1070,7 @@ select:focus {
 .avatar {
     width: 80px;
     height: 80px;
-    background: var(--border-color);
+    background: var(--border);
     border-radius: 50%;
     margin: 0 auto 16px;
     display: flex;
@@ -1040,7 +1096,7 @@ select:focus {
 .stat .label { font-size: 0.8rem; color: var(--text-secondary); }
 
 .btn-outline {
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     padding: 12px;
     border-radius: var(--radius-md);
     display: flex;
@@ -1054,19 +1110,19 @@ select:focus {
 .image-upload-container {
     width: 100%;
     height: 200px;
-    border: 2px dashed var(--border-color);
+    border: 2px dashed var(--border);
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    background-color: var(--surface-color);
+    background-color: var(--surface);
     transition: all 0.3s ease;
 }
 
 .image-upload-container:hover {
-    border-color: var(--primary-color);
+    border-color: var(--primary);
     background-color: rgba(0,0,0,0.02);
 }
 
@@ -1097,7 +1153,7 @@ select:focus {
     margin-top: 0.5rem;
     width: 100%;
     height: 120px;
-    border: 1px dashed var(--border-color);
+    border: 1px dashed var(--border);
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;

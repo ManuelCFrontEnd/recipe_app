@@ -53,18 +53,24 @@ export default class Editor {
                                 <option value="Difícil">Difícil</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Categoría</label>
-                            <select id="category">
-                                <option value="Pasta">Pasta</option>
-                                <option value="Arroces">Arroces</option>
-                                <option value="Carnes">Carnes</option>
-                                <option value="Pescado">Pescado</option>
-                                <option value="Vegano">Vegano</option>
-                                <option value="Postres">Postres</option>
-                                <option value="Ensaladas">Ensaladas</option>
-                                <option value="Otros">Otros</option>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoría Principal</label>
+                        <select id="mainCategory">
+                            <option value="Breakfasts">Desayunos</option>
+                            <option value="Lunches">Almuerzos</option>
+                            <option value="Dinners">Cenas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subcategoría</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="subcategory" style="flex: 1;">
+                                <!-- Options will be populated dynamically -->
                             </select>
+                            <button type="button" id="btn-add-subcategory" class="btn-small" style="white-space: nowrap;">+ Nueva</button>
                         </div>
                     </div>
 
@@ -211,6 +217,33 @@ export default class Editor {
             document.getElementById('main-image-container')
         );
 
+        // Populate subcategories dropdown
+        const populateSubcategories = () => {
+            const subcategorySelect = document.getElementById('subcategory');
+            const allSubcategories = window.store.getAllSubcategories();
+
+            subcategorySelect.innerHTML = allSubcategories.map(sub =>
+                `<option value="${sub}">${sub}</option>`
+            ).join('');
+        };
+
+        populateSubcategories();
+
+        // Add custom subcategory
+        document.getElementById('btn-add-subcategory').addEventListener('click', () => {
+            const newSubcategory = prompt('Ingrese el nombre de la nueva subcategoría:');
+            if (newSubcategory) {
+                const success = window.store.addCustomSubcategory(newSubcategory);
+                if (success) {
+                    populateSubcategories();
+                    document.getElementById('subcategory').value = newSubcategory.trim();
+                    alert('Subcategoría añadida correctamente!');
+                } else {
+                    alert('Esta subcategoría ya existe o el nombre no es válido.');
+                }
+            }
+        });
+
         document.getElementById('add-ingredient').addEventListener('click', () => addIngredientRow());
         document.getElementById('add-step').addEventListener('click', () => addStepRow());
 
@@ -225,7 +258,8 @@ export default class Editor {
                 document.getElementById('time').value = recipe.time;
                 document.getElementById('servings').value = recipe.servings;
                 document.getElementById('difficulty').value = recipe.difficulty;
-                document.getElementById('category').value = recipe.category;
+                document.getElementById('mainCategory').value = recipe.mainCategory || 'Lunches';
+                document.getElementById('subcategory').value = recipe.subcategory || 'Pasta';
 
                 if (recipe.image) {
                     setupImagePreview(
@@ -283,7 +317,8 @@ export default class Editor {
                     time: document.getElementById('time').value,
                     servings: document.getElementById('servings').value,
                     difficulty: document.getElementById('difficulty').value,
-                    category: document.getElementById('category').value,
+                    mainCategory: document.getElementById('mainCategory').value,
+                    subcategory: document.getElementById('subcategory').value,
                     image: mainImage,
                     ingredients,
                     steps

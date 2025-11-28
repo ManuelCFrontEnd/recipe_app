@@ -15,7 +15,7 @@ export default class Home {
                     <div class="card-meta">
                         <span>${recipe.difficulty}</span>
                         <span>•</span>
-                        <span>${recipe.category}</span>
+                        <span>${recipe.subcategory || recipe.category || 'Sin categoría'}</span>
                     </div>
                 </div>
             </a>
@@ -36,15 +36,10 @@ export default class Home {
                 <section class="categories-section">
                     <h2>Categorías</h2>
                     <div class="category-scroll">
-                        <button class="category-chip active">Todas</button>
-                        <button class="category-chip">Pasta</button>
-                        <button class="category-chip">Arroces</button>
-                        <button class="category-chip">Carnes</button>
-                        <button class="category-chip">Pescado</button>
-                        <button class="category-chip">Vegano</button>
-                        <button class="category-chip">Postres</button>
-                        <button class="category-chip">Ensaladas</button>
-                        <button class="category-chip">Otros</button>
+                        <button class="category-chip active" data-category="Todas">Todas</button>
+                        <button class="category-chip" data-category="Breakfasts">Desayunos</button>
+                        <button class="category-chip" data-category="Lunches">Almuerzos</button>
+                        <button class="category-chip" data-category="Dinners">Cenas</button>
                     </div>
                 </section>
 
@@ -82,7 +77,7 @@ export default class Home {
             const filtered = allRecipes.filter(r => {
                 const matchesSearch = r.title.toLowerCase().includes(currentSearch) ||
                     r.ingredients.some(i => i.item.toLowerCase().includes(currentSearch));
-                const matchesCategory = currentCategory === 'Todas' || r.category === currentCategory;
+                const matchesCategory = currentCategory === 'Todas' || r.mainCategory === currentCategory;
                 return matchesSearch && matchesCategory;
             });
 
@@ -101,7 +96,7 @@ export default class Home {
                         <div class="card-meta">
                             <span>${r.difficulty}</span>
                             <span>•</span>
-                            <span>${r.category}</span>
+                            <span>${r.subcategory || r.category || 'Sin categoría'}</span>
                         </div>
                     </div>
                 </a>
@@ -120,7 +115,7 @@ export default class Home {
                 // Add to clicked
                 chip.classList.add('active');
 
-                currentCategory = chip.textContent;
+                currentCategory = chip.dataset.category;
                 renderRecipes();
             });
         });
